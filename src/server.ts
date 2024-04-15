@@ -14,7 +14,7 @@ mongoose
     useUnifiedTopology: true,
   } as mongoose.ConnectOptions)
   .then(() => {
-    console.log("STK v2.0 [API] - Connected to MongoDB");
+    console.log("STK v2 [API] - Connected to MongoDB");
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB: ", error);
@@ -30,7 +30,7 @@ const corsOptions: cors.CorsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("STK v2.0 [API] - Not allowed by CORS"));
+      callback(new Error("STK v2 [API] - Not allowed by CORS"));
     }
   },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -53,5 +53,5 @@ app.use(errorHandler);
 
 // Listen for backend server on port 3000
 app.listen(port, () => {
-  console.log(`STK v2.0 [API] - Server is live at http://localhost:${port}`);
+  console.log(`STK v2 [API] - Server is live at http://localhost:${port}`);
 });

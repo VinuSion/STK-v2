@@ -1,7 +1,7 @@
 {
   "name": "stk_v2",
   "version": "1.0.0",
-  "description": "StockStores v2.0 - Backend",
+  "description": "StockStores v2 - Backend",
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/server.ts",
