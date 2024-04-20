@@ -5,14 +5,13 @@ import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
 import { baseUrl } from './utils';
 
+import userRouter from "./routes/userRoutes";
+
 config(); // Setup dotenv
 
 // MongoDB Connection
 mongoose
-  .connect(process.env.MONGODB_URL!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as mongoose.ConnectOptions)
+  .connect(process.env.MONGODB_URL!)
   .then(() => {
     console.log("STK v2 [API] - Connected to MongoDB");
   })
@@ -43,7 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ALL API ENDPOINTS FOR THE SERVER
-////////////////////////////////////////////////////
+app.use("/api/users", userRouter);
 
 // Underscores _ are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
