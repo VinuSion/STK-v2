@@ -5,6 +5,7 @@ import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
 import { baseUrl } from './utils';
 
+import dataRouter from "./routes/dataRoutes";
 import userRouter from "./routes/userRoutes";
 
 config(); // Setup dotenv
@@ -42,6 +43,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ALL API ENDPOINTS FOR THE SERVER
+app.use("/api/seed", dataRouter);
 app.use("/api/users", userRouter);
 
 // Underscores _ are both 'req' and 'next' respectively

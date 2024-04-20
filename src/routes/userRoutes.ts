@@ -8,51 +8,88 @@ import { generateToken, baseUrl, template, normalizeName } from "../utils";
 
 const userRouter = express.Router();
 
-userRouter.post(
-  "/signup",
-  expressAsyncHandler(async (req: Request, res: Response) => {
-    const existing = await User.findOne({ email: req.body.email });
-    if (!existing) {
-      const newUser = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 12),
-        pictureURL: "",
-      });
-      const user = await newUser.save();
-      res.send({
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        token: generateToken(user),
-        pictureURL: "",
-      });
-    } else {
-      res.status(401).send({ message: "Ya existe un usuario con ese correo" });
+userRouter.post('/signup', expressAsyncHandler(async (req: Request, res: Response) => {
+  try {
+    // Validate request body
+    if (!req.body.firstName || !req.body.lastName || !req.body.email || !req.body.password) {
+      res.status(400).send({ message: 'Missing required fields' });
+      return;
     }
-  })
-);
+
+    // Check if user with email already exists
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      res.status(401).send({ message: 'Ya existe un usuario con ese correo' });
+      return;
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
+    // Create new user
+    const newUser = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: hashedPassword,
+      isSeller: req.body.isSeller,
+      pictureURL: '',
+      settings: {
+        colorTheme: 'system',
+      },
+    });
+
+    // Save user to database
+    const user = await newUser.save();
+    // Generate token
+    const token = generateToken(user);
+
+    // Send response
+    res.status(201).send({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isSeller: user.isSeller,
+      token: token,
+      pictureURL: user.pictureURL,
+      settings: {
+        colorTheme: 'system',
+      },
+    });
+  } catch (error) {
+    console.error('Error during signup: ', error);
+    res.status(500).send({ message: 'An error occurred during signup' });
+  }
+}));
 
 userRouter.post(
   "/login",
   expressAsyncHandler(async (req: Request, res: Response) => {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
-          _id: user._id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          token: generateToken(user),
-          pictureURL: user.pictureURL,
-        });
-        return;
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+          res.send({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            isSeller: user.isSeller,
+            token: generateToken(user),
+            pictureURL: user.pictureURL,
+            settings: {
+              colorTheme: user.settings.colorTheme
+            }
+          });
+          return;
+        }
       }
+      res.status(401).send({ message: "Correo o Contraseña invalidos" });
+    } catch (error) {
+      console.error('Error during login: ', error);
+      res.status(500).send({ message: 'An error occurred during login' });
     }
-    res.status(401).send({ message: "Correo o Contraseña invalidos" });
   })
 );
 
