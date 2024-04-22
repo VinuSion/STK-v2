@@ -5,15 +5,19 @@ interface UserSettings {
 }
 
 interface User extends Document {
-  firstName: string; // Nombre
-  lastName: string; // Apellido
-  email: string; // Correo electronico
-  password: string; // Contraseña
-  isSeller: boolean;
-  resetToken?: string; // Se utiliza para reestablecer/cambiar la contraseña
-  pictureURL: string; // URL de la foto de perfil
-  settings: UserSettings;
+  firstName: string; // Nombre del usuario
+  lastName: string; // Apellido del usuario
+  email: string; // Correo electronico del usuario
+  password: string; // Contraseña del usuario
+  isSeller: boolean; // Si el usuario es vendedor o no
+  resetToken?: string; // Se utiliza para reestablecer/cambiar la contraseña del usuario
+  pictureURL: string; // URL de la foto de perfil del usuario
+  settings: UserSettings; // Configuracion de la cuenta del usuario
 }
+
+const UserSettingsSchema = new Schema({
+  colorTheme: { type: String, enum: ['light', 'dark', 'system'], default: 'system' },
+});
 
 const UserSchema = new Schema(
   {
@@ -24,9 +28,7 @@ const UserSchema = new Schema(
     isSeller: { type: Boolean, required: true, default: false },
     resetToken: { type: String },
     pictureURL: { type: String, default: "" },
-    settings: { 
-      colorTheme: { type: String, enum: ['light', 'dark', 'system'], default: 'system' },
-    },
+    settings: UserSettingsSchema,
   },
   { timestamps: true }
 );

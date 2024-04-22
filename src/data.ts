@@ -19,7 +19,7 @@ const data = {
       email: 'jane@mail.com',
       password: bcrypt.hashSync('password2'),
       isSeller: false,
-      pictureURL: 'https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png',
+      pictureURL: '',
       settings: {
         colorTheme: 'dark',
       },
@@ -30,7 +30,7 @@ const data = {
       email: 'alice@mail.com',
       password: bcrypt.hashSync('password3'),
       isSeller: false,
-      pictureURL: 'https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png',
+      pictureURL: '',
       settings: {
         colorTheme: 'system',
       },
