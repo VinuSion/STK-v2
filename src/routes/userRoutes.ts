@@ -8,6 +8,7 @@ import { generateToken, baseUrl, template, normalizeName } from "../utils";
 
 const userRouter = express.Router();
 
+// Create new user by signup
 userRouter.post('/signup', expressAsyncHandler(async (req: Request, res: Response) => {
   try {
     // Validate request body
@@ -63,6 +64,7 @@ userRouter.post('/signup', expressAsyncHandler(async (req: Request, res: Respons
   }
 }));
 
+// Authenticate a user by login
 userRouter.post(
   "/login",
   expressAsyncHandler(async (req: Request, res: Response) => {
@@ -93,6 +95,7 @@ userRouter.post(
   })
 );
 
+// Generate reset password token URL
 userRouter.post(
   "/forgot-password",
   expressAsyncHandler(async (req: Request, res: Response) => {
@@ -142,6 +145,7 @@ userRouter.post(
   })
 );
 
+// Reset password by Token
 userRouter.post(
   "/reset-password",
   expressAsyncHandler(async (req: Request, res: Response) => {

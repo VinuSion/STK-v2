@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
 
 export const baseUrl = () => {
   return process.env.BASE_URL || "http://localhost:5000";
@@ -23,24 +22,7 @@ export const generateToken = (user: any) => {
   );
 };
 
-// export const isAuth = (req: Request, res: Response, next: NextFunction) => {
-//   const authorization = req.headers.authorization;
-//   if (authorization) {
-//     const token = authorization.slice(7, authorization.length);
-//     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
-//       if (err) {
-//         res.status(401).send({ message: 'Invalid Token' });
-//       } else {
-//         req.user = decode;
-//         next();
-//       }
-//     });
-//   } else {
-//     res.status(401).send({ message: 'No Token Supplied' });
-//   }
-// };
-
-export const normalizeName = (name: string) => {
+export const normalizeName = (name: string): string => {
   const nameParts = name.split(/\s+/);
   const filteredNameParts = nameParts.filter((part) => part.trim() !== '');
 
@@ -52,7 +34,7 @@ export const normalizeName = (name: string) => {
   return normalizedName;
 };
 
-export const template = (resetLink: string) => `
+export const template = (resetLink: string): string => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,3 +90,19 @@ export const template = (resetLink: string) => `
 </body>
 </html>
 `;
+
+export const generateRandomString = (length: number = 10): string => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export const transformStoreName = (input: string): string => {
+  const specialCharacters = /['",.%&$^@#\-+={}]/g;
+  const filteredStoreName = input.replace(specialCharacters, '');
+  return filteredStoreName.toLowerCase().replace(/\s+/g, '-');
+}

@@ -7,7 +7,7 @@ interface StoreAddress {
 }
 
 interface Store extends Document {
-  sellerID: mongoose.Types.ObjectId; // Reference al usuario vendedor que es dueño de la tienda
+  sellerId: mongoose.Types.ObjectId; // Referencia al usuario vendedor que es dueño de la tienda
   sellerFirstName: string; // Nombre del vendedor de la tienda
   sellerLastName: string; // Apellido del vendedor de la tienda
   sellerPictureURL: string; // URL de la foto de perfil del vendedor de la tienda
@@ -27,7 +27,7 @@ const StoreAddressSchema = new Schema({
 
 const StoreSchema = new Schema(
   {
-    sellerID: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    sellerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     sellerFirstName: { type: String, required: true },
     sellerLastName: { type: String, required: true },
     sellerPictureURL: { type: String, required: true },

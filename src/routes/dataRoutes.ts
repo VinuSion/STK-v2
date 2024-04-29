@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import data from "../data";
 import UserModel from "../models/userModel";
+import StoreModel from "../models/storeModel";
+import ShippingAddressModel from "../models/shippingAddressModel";
 
 const dataRouter = express.Router();
 
@@ -8,13 +10,19 @@ dataRouter.get("/", async (_req: Request, res: Response) => {
   try {
     // Clear existing data
     await UserModel.deleteMany({});
+    await StoreModel.deleteMany({});
+    await ShippingAddressModel.deleteMany({});
 
     // Insert base data
     const createdUsers = await UserModel.insertMany(data.users);
+    const createdStores = await StoreModel.insertMany(data.stores);
+    const createdShippingAddresses = await ShippingAddressModel.insertMany(data.shippingAddresses);
 
     console.log("Successfuly created base data, check your MongoDB database.");
     res.send({
       createdUsers,
+      createdStores,
+      createdShippingAddresses,
     });
   } catch (error) {
     console.error(error);

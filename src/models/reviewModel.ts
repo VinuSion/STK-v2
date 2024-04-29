@@ -2,9 +2,9 @@ import mongoose, { Schema, Document } from "mongoose";
 
 interface Review extends Document {
   productId: mongoose.Types.ObjectId; // ID del producto donde se encuentra la reseña
-  userFirstName: string; // First name of the user who left the review
-  userLastName: string; // Last name of the user who left the review
-  userPictureURL: string; // Profile picture URL of the user who left the review
+  userFirstName: string; // Nombre del usuario que dejo la reseña
+  userLastName: string; // Apellido del usuario que dejo la reseña
+  userPictureURL: string; // URL de la foto de perfil del usuario que dejo la reseña
   rating: number; // Reseña del producto (1-5)
   comment?: string; // Comentario de la reseña (Opcional)
 }

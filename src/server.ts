@@ -7,6 +7,8 @@ import { baseUrl } from './utils';
 
 import dataRouter from "./routes/dataRoutes";
 import userRouter from "./routes/userRoutes";
+import storeRouter from "./routes/storeRoutes";
+import shippingRouter from "./routes/shippingRoutes";
 
 config(); // Setup dotenv
 
@@ -45,6 +47,8 @@ app.use(express.urlencoded({ extended: true }));
 // ALL API ENDPOINTS FOR THE SERVER
 app.use("/api/seed", dataRouter);
 app.use("/api/users", userRouter);
+app.use("/api/stores", storeRouter);
+app.use("/api/shipping", shippingRouter);
 
 // Underscores _ are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
