@@ -39,7 +39,7 @@ const OrderItemSchema = new Schema({
   productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
   productSlug: { type: String, required: true },
   productName: { type: String, required: true },
-  productLeadImage: { type: String, required: true },
+  productLeadImage: { type: String },
   productPrice: { type: Number, required: true },
   quantity: { type: Number, required: true },
   itemPrice: { type: Number, required: true },
@@ -58,7 +58,7 @@ const OrderSchema = new Schema({
   storeId: { type: Schema.Types.ObjectId, ref: 'Store', required: true },
   storeSlug: { type: String, required: true, unique: true },
   storeName: { type: String, required: true },
-  storeImageURL: { type: String, required: true },
+  storeImageURL: { type: String },
   orderStatus: {
     type: String,
     enum: ['Awaiting Seller Approval', 'Waiting for Payment', 'Waiting for Delivery', 'Delivered', 'Cancelled', 'Rejected by Seller'],

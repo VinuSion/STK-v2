@@ -4,6 +4,7 @@ import ShippingAddress from "../models/shippingAddressModel";
 
 const shippingRouter = express.Router();
 
+// Get all shipping addresses from a given user
 shippingRouter.get('/:userId', expressAsyncHandler(async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

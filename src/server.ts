@@ -11,6 +11,7 @@ import storeRouter from "./routes/storeRoutes";
 import shippingRouter from "./routes/shippingRoutes";
 import productRouter from "./routes/productRoutes";
 import reviewRouter from "./routes/reviewRoutes";
+import orderRouter from "./routes/orderRoutes";
 
 config(); // Setup dotenv
 
@@ -53,8 +54,9 @@ app.use("/api/stores", storeRouter);
 app.use("/api/shipping", shippingRouter);
 app.use("/api/products", productRouter);
 app.use("/api/reviews", reviewRouter);
+app.use("/api/orders", orderRouter);
 
-// Underscores _ are both 'req' and 'next' respectively
+// Underscores '_', '__' are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
   res.status(500).send({ message: err.message });
 };
