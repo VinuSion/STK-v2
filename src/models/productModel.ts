@@ -2,12 +2,12 @@ import mongoose, { Schema, Document } from "mongoose";
 
 interface Product extends Document {
   storeId: mongoose.Types.ObjectId; // Referencia del ID de la tienda de ese producto
-  slug: string; // Identificador de URL unico y descriptivo del producto
-  name: string; // Nombre del producto
-  description: string; // Descripcion del producto
-  price: number; // Precio del producto
-  brand?: string; // Marca del producto (Opcional)
-  category: string; // Categoria del producto
+  productSlug: string; // Identificador de URL unico y descriptivo del producto
+  productName: string; // Nombre del producto
+  productDescription: string; // Descripcion del producto
+  productPrice: number; // Precio del producto
+  productBrand?: string; // Marca del producto (Opcional)
+  productCategory: string; // Categoria del producto
   stockAmount: number; // Cantidad del producto disponible
   reviewsAmount: number; // Numero de reseñas del producto
   averageRating: number; // Rating promedio de las reseñas del producto
@@ -19,12 +19,12 @@ interface Product extends Document {
 const ProductSchema = new Schema(
   {
     storeId: { type: Schema.Types.ObjectId, ref: 'Store', required: true },
-    slug: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    price: { type: Number, required: true },
-    brand: { type: String },
-    category: { type: String, required: true },
+    productSlug: { type: String, required: true, unique: true },
+    productName: { type: String, required: true },
+    productDescription: { type: String, required: true },
+    productPrice: { type: Number, required: true },
+    productBrand: { type: String },
+    productCategory: { type: String, required: true },
     stockAmount: { type: Number, required: true },
     reviewsAmount: { type: Number, default: 0 },
     averageRating: { type: Number, default: 0 },

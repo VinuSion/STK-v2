@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import Review from "./models/reviewModel";
 
 export const baseUrl = () => {
   return process.env.BASE_URL || "http://localhost:5000";
@@ -101,8 +102,16 @@ export const generateRandomString = (length: number = 10): string => {
   return result;
 }
 
-export const transformStoreName = (input: string): string => {
+export const transformName = (input: string): string => {
   const specialCharacters = /['",.%&$^@#\-+={}]/g;
   const filteredStoreName = input.replace(specialCharacters, '');
   return filteredStoreName.toLowerCase().replace(/\s+/g, '-');
+}
+
+export const calculateAverageRating = async (productId: string) => {
+  const reviews = await Review.find({ productId });
+  const totalReviews = reviews.length;
+  const sumRatings = reviews.reduce((sum, review) => sum + review.rating, 0);
+  const newAverageRating = totalReviews > 0 ? sumRatings / totalReviews : 0;
+  return { newAverageRating, totalReviews };
 }

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import Store from "../models/storeModel";
-import { generateRandomString, transformStoreName } from "../utils";
+import { generateRandomString, transformName } from "../utils";
 
 const storeRouter = express.Router();
 
@@ -45,7 +45,7 @@ storeRouter.get('/seller/:sellerId', expressAsyncHandler(async (req: Request, re
 storeRouter.post('/create', expressAsyncHandler(async (req: Request, res: Response) => {
   try {
     // Transform storeSlug
-    const storeSlug = `${transformStoreName(req.body.storeName)}-${generateRandomString()}`;
+    const storeSlug = `${transformName(req.body.storeName)}-${generateRandomString()}`;
 
     // Create new store
     const newStore = new Store({
@@ -53,9 +53,9 @@ storeRouter.post('/create', expressAsyncHandler(async (req: Request, res: Respon
       sellerFirstName: req.body.sellerFirstName,
       sellerLastName: req.body.sellerLastName,
       sellerPictureURL: req.body.sellerPictureURL,
-      storeSlug: storeSlug, 
-      storeName: req.body.storeName, 
-      storeDescription: req.body.storeDescription, 
+      storeSlug: storeSlug,
+      storeName: req.body.storeName,
+      storeDescription: req.body.storeDescription,
       storePhoneNumber: req.body.storePhoneNumber,
       storeAddress: req.body.storeAddress,
       storeImageURL: req.body.storeImageURL,

@@ -9,6 +9,8 @@ import dataRouter from "./routes/dataRoutes";
 import userRouter from "./routes/userRoutes";
 import storeRouter from "./routes/storeRoutes";
 import shippingRouter from "./routes/shippingRoutes";
+import productRouter from "./routes/productRoutes";
+import reviewRouter from "./routes/reviewRoutes";
 
 config(); // Setup dotenv
 
@@ -49,6 +51,8 @@ app.use("/api/seed", dataRouter);
 app.use("/api/users", userRouter);
 app.use("/api/stores", storeRouter);
 app.use("/api/shipping", shippingRouter);
+app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
 
 // Underscores _ are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
