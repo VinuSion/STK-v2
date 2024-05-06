@@ -12,6 +12,7 @@ import shippingRouter from "./routes/shippingRoutes";
 import productRouter from "./routes/productRoutes";
 import reviewRouter from "./routes/reviewRoutes";
 import orderRouter from "./routes/orderRoutes";
+import uploadRouter from "./routes/uploadRoutes";
 
 config(); // Setup dotenv
 
@@ -55,6 +56,7 @@ app.use("/api/shipping", shippingRouter);
 app.use("/api/products", productRouter);
 app.use("/api/reviews", reviewRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/upload", uploadRouter);
 
 // Underscores '_', '__' are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {

@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import Store from "../models/storeModel";
+import Product from "../models/productModel";
 import { generateRandomString, transformName } from "../utils";
 
 const storeRouter = express.Router();
@@ -81,7 +82,7 @@ storeRouter.put(
       const newStoreData = req.body; // Contains the updated store information
 
       const updatedStore = await Store.findByIdAndUpdate(storeId, newStoreData, { new: true });
-      
+
       if (updatedStore) {
         res.send(updatedStore); // Return the updated store data
       } else {
@@ -106,7 +107,7 @@ storeRouter.put(
 
       // Update all stores associated with the seller
       const updatedStores = await Store.updateMany(
-        { sellerId: sellerId }, 
+        { sellerId: sellerId },
         { $set: newSellerData }
       );
 
@@ -119,6 +120,30 @@ storeRouter.put(
       console.error('Error updating stores: ', err);
       res.status(500).send({
         message: "An error occurred during seller updates throughout all stores.",
+      });
+    }
+  })
+);
+
+// Delete store and associated products
+storeRouter.delete(
+  "/delete/:storeId",
+  expressAsyncHandler(async (req: Request, res: Response) => {
+    try {
+      const storeId = req.params.storeId;
+      // Delete the store
+      const deletedStore = await Store.findByIdAndDelete(storeId);
+      if (!deletedStore) {
+        res.status(404).send({ message: 'No se pudo encontrar la tienda para eliminar.' });
+      } else {
+        // Delete all products associated with the store
+        await Product.deleteMany({ storeId: storeId });
+        res.send({ message: 'Tienda y productos asociados eliminados exitosamente.' });
+      }
+    } catch (err) {
+      console.error('Error deleting store and associated products: ', err);
+      res.status(500).send({
+        message: 'Ocurrió un error al eliminar la tienda y los productos asociados.'
       });
     }
   })

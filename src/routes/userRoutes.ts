@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import expressAsyncHandler from "express-async-handler";
 import User from "../models/userModel";
+import ShippingAddress from "../models/shippingAddressModel";
+import Store from "../models/storeModel";
+import Product from "../models/productModel";
 import { generateToken, baseUrl, template, normalizeName } from "../utils";
 
 const userRouter = express.Router();
@@ -140,7 +143,7 @@ userRouter.post(
         message: `Hemos enviado el enlace a tu correo (${req.body.email})`,
       });
     } else {
-      res.status(404).send({ message: "No existe un usuario con ese correo" });
+      res.status(404).send({ message: "No existe un usuario con ese correo." });
     }
   })
 );
@@ -255,24 +258,57 @@ userRouter.put(
   })
 );
 
+userRouter.put(
+  "/remove-picture/:userId",
+  expressAsyncHandler(async (req: Request, res: Response) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (user) {
+        // Set the profile picture URL to an empty string.
+        user.pictureURL = "";
+        // Save the updated user document.
+        await user.save();
+        res.send({ message: "Foto de perfil removida exitosamente." });
+      } else {
+        res.status(404).send({ message: "Usuario no se pudo encontrar." });
+      }
+    } catch (error) {
+      console.error("Error removing profile picture: ", error);
+      res.status(500).send({
+        message: "Error al remover la foto del perfil.",
+      });
+    }
+  })
+);
+
 // Deletes the user account with all its related data
-// userRouter.delete(
-//   "/delete/:id",
-//   expressAsyncHandler(async (req: Request, res: Response) => {
-//     try {
-//       const userId = req.params.id;
-
-//       // Deletes user account
-//       await User.findByIdAndRemove(userId);
-
-//       res.status(200).send({ message: "Usuario y datos relacionados eliminados exitosamente." });
-//     } catch (err) {
-//       res.status(500).send({
-//         message:
-//           "Ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.",
-//       });
-//     }
-//   })
-// );
+userRouter.delete(
+  "/delete/:id",
+  expressAsyncHandler(async (req: Request, res: Response) => {
+    try {
+      const userId = req.params.id;
+      const { isSeller } = req.body;
+      // Delete user account
+      await User.findByIdAndDelete(userId);
+      // Delete associated shipping addresses
+      await ShippingAddress.deleteMany({ userId: userId });
+      if (isSeller) {
+        // If user is a seller, delete all stores and associated products
+        const stores = await Store.find({ sellerId: userId });
+        const storeIds = stores.map(store => store._id);
+        // Delete products associated with all stores
+        await Product.deleteMany({ storeId: { $in: storeIds } });
+        // Delete all stores associated with the seller
+        await Store.deleteMany({ sellerId: userId });
+      }
+      res.status(200).send({ message: "Usuario y datos relacionados eliminados exitosamente." });
+    } catch (err) {
+      console.error('Error deleting user and related data: ', err);
+      res.status(500).send({
+        message: "Ha ocurrido un error. Por favor, inténtelo de nuevo más tarde.",
+      });
+    }
+  })
+);
 
 export default userRouter;
