@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from 'cors';
 import mongoose from "mongoose";
 import { config } from "dotenv";
@@ -57,6 +57,10 @@ app.use("/api/products", productRouter);
 app.use("/api/reviews", reviewRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);
+
+app.get("/", (_: Request, res: Response) => {
+  res.status(200).json({ message: "Hello World" });
+});
 
 // Underscores '_', '__' are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
