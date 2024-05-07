@@ -68,3 +68,5 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`STK v2 [API] - Server is live at http://localhost:${port}`);
 });
+
+export default app;
