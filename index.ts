@@ -3,16 +3,16 @@ import cors from 'cors';
 import mongoose from "mongoose";
 import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
-import { baseUrl } from './utils';
+import { baseUrl } from './src/utils';
 
-import dataRouter from "./routes/dataRoutes";
-import userRouter from "./routes/userRoutes";
-import storeRouter from "./routes/storeRoutes";
-import shippingRouter from "./routes/shippingRoutes";
-import productRouter from "./routes/productRoutes";
-import reviewRouter from "./routes/reviewRoutes";
-import orderRouter from "./routes/orderRoutes";
-import uploadRouter from "./routes/uploadRoutes";
+import dataRouter from "./src/routes/dataRoutes";
+import userRouter from "./src/routes/userRoutes";
+import storeRouter from "./src/routes/storeRoutes";
+import shippingRouter from "./src/routes/shippingRoutes";
+import productRouter from "./src/routes/productRoutes";
+import reviewRouter from "./src/routes/reviewRoutes";
+import orderRouter from "./src/routes/orderRoutes";
+import uploadRouter from "./src/routes/uploadRoutes";
 
 config(); // Setup dotenv
 
