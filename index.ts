@@ -49,14 +49,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ALL API ENDPOINTS FOR THE SERVER
-app.use("/api/seed", dataRouter);
-app.use("/api/users", userRouter);
-app.use("/api/stores", storeRouter);
-app.use("/api/shipping", shippingRouter);
-app.use("/api/products", productRouter);
-app.use("/api/reviews", reviewRouter);
-app.use("/api/orders", orderRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/seed", dataRouter);
+app.use("/users", userRouter);
+app.use("/stores", storeRouter);
+app.use("/shipping", shippingRouter);
+app.use("/products", productRouter);
+app.use("/reviews", reviewRouter);
+app.use("/orders", orderRouter);
+app.use("/upload", uploadRouter);
 
 app.get("/", (_: Request, res: Response) => {
   res.status(200).json({ message: "Hello World" });
