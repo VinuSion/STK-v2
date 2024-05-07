@@ -1,18 +1,18 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cors from 'cors';
 import mongoose from "mongoose";
 import { config } from "dotenv";
 import { ErrorRequestHandler } from "express";
-import { baseUrl } from './src/utils';
+import { baseUrl } from './utils';
 
-import dataRouter from "./src/routes/dataRoutes";
-import userRouter from "./src/routes/userRoutes";
-import storeRouter from "./src/routes/storeRoutes";
-import shippingRouter from "./src/routes/shippingRoutes";
-import productRouter from "./src/routes/productRoutes";
-import reviewRouter from "./src/routes/reviewRoutes";
-import orderRouter from "./src/routes/orderRoutes";
-import uploadRouter from "./src/routes/uploadRoutes";
+import dataRouter from "./routes/dataRoutes";
+import userRouter from "./routes/userRoutes";
+import storeRouter from "./routes/storeRoutes";
+import shippingRouter from "./routes/shippingRoutes";
+import productRouter from "./routes/productRoutes";
+import reviewRouter from "./routes/reviewRoutes";
+import orderRouter from "./routes/orderRoutes";
+import uploadRouter from "./routes/uploadRoutes";
 
 config(); // Setup dotenv
 
@@ -49,18 +49,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ALL API ENDPOINTS FOR THE SERVER
-app.use("/seed", dataRouter);
-app.use("/users", userRouter);
-app.use("/stores", storeRouter);
-app.use("/shipping", shippingRouter);
-app.use("/products", productRouter);
-app.use("/reviews", reviewRouter);
-app.use("/orders", orderRouter);
-app.use("/upload", uploadRouter);
-
-app.get("/", (_: Request, res: Response) => {
-  res.status(200).json({ message: "Hello World" });
-});
+app.use("/api/seed", dataRouter);
+app.use("/api/users", userRouter);
+app.use("/api/stores", storeRouter);
+app.use("/api/shipping", shippingRouter);
+app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/upload", uploadRouter);
 
 // Underscores '_', '__' are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
@@ -72,5 +68,3 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`STK v2 [API] - Server is live at http://localhost:${port}`);
 });
-
-export default app;
