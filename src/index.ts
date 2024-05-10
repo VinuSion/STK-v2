@@ -1,4 +1,5 @@
-import express from "express";
+import express, { Request, Response } from "express";
+import expressAsyncHandler from "express-async-handler";
 import cors from 'cors';
 import mongoose from "mongoose";
 import { config } from "dotenv";
@@ -57,6 +58,10 @@ app.use("/api/products", productRouter);
 app.use("/api/reviews", reviewRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);
+
+app.get('/', expressAsyncHandler(async (_: Request, res: Response) => {
+  res.send({ message: "Welcome to the STK v2 API!"})
+}));
 
 // Underscores '_', '__' are both 'req' and 'next' respectively
 const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
