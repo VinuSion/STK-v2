@@ -1,7 +1,3 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/dist/index.js", "dest": "/dist/index.js" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }]
 }
