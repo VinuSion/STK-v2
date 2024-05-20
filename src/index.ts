@@ -50,14 +50,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ALL API ENDPOINTS FOR THE SERVER
-app.use("/api/seed", dataRouter);
-app.use("/api/users", userRouter);
-app.use("/api/stores", storeRouter);
-app.use("/api/shipping", shippingRouter);
-app.use("/api/products", productRouter);
-app.use("/api/reviews", reviewRouter);
-app.use("/api/orders", orderRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/v2/seed", dataRouter);
+app.use("/v2/users", userRouter);
+app.use("/v2/stores", storeRouter);
+app.use("/v2/shipping", shippingRouter);
+app.use("/v2/products", productRouter);
+app.use("/v2/reviews", reviewRouter);
+app.use("/v2/orders", orderRouter);
+app.use("/v2/upload", uploadRouter);
 
 app.get('/', expressAsyncHandler(async (_: Request, res: Response) => {
   res.send({ message: "Welcome to the STK v2 API!"})
