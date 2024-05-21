@@ -6,7 +6,7 @@ import { transformName, generateRandomString } from "../utils";
 
 const productRouter = express.Router();
 
-// Get All Products from a Store
+// Get All Products from a Store by its ID (Optional of passing { "featured": "true" } to get only Featured Products from that Store)
 productRouter.get(
   "/:storeId/all",
   expressAsyncHandler(async (req: Request, res: Response) => {
@@ -14,6 +14,24 @@ productRouter.get(
     const isFeatured = req.body.featured;
 
     let query: any = { storeId: storeId };
+
+    if (isFeatured) {
+      query.isFeatured = true;
+    }
+
+    const allProductsFromStore = await Product.find(query);
+    res.send(allProductsFromStore);
+  })
+);
+
+// Get All Products from a Store by its Slug (Optional of passing { "featured": "true" } to get only Featured Products from that Store)
+productRouter.get(
+  "/:storeSlug/all",
+  expressAsyncHandler(async (req: Request, res: Response) => {
+    const storeSlug = req.params.storeSlug;
+    const isFeatured = req.body.featured;
+
+    let query: any = { storeSlug: storeSlug };
 
     if (isFeatured) {
       query.isFeatured = true;
