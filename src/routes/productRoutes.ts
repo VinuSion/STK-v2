@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import Review from "../models/reviewModel";
 import Product from "../models/productModel";
+import Store from "../models/storeModel";
 import { transformName, generateRandomString } from "../utils";
 
 const productRouter = express.Router();
@@ -31,14 +32,24 @@ productRouter.get(
     const storeSlug = req.params.storeSlug;
     const isFeatured = req.body.featured;
 
-    let query: any = { storeSlug: storeSlug };
+    const store = await Store.findOne({ slug: storeSlug });
 
-    if (isFeatured) {
-      query.isFeatured = true;
+    if (!store) {
+      res.status(404).send({ message: 'Lo sentimos, esa tienda no se pudo encontrar' });
+    } else {
+      // Use the store ID to query the products
+      let query: any = { storeId: store._id };
+      if (isFeatured) {
+        query.isFeatured = true;
+      }
+      const allProductsFromStore = await Product.find(query);
+
+      // Send response including storeName and allProductsFromStore
+      res.send({
+        storeName: store.storeName,
+        allProductsFromStore,
+      });
     }
-
-    const allProductsFromStore = await Product.find(query);
-    res.send(allProductsFromStore);
   })
 );
 
