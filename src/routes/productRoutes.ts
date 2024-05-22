@@ -27,7 +27,7 @@ productRouter.get(
 
 // Get All Products from a Store by its Slug (Optional of passing { "featured": "true" } to get only Featured Products from that Store)
 productRouter.get(
-  "/:storeSlug/all",
+  "/store-slug/:storeSlug",
   expressAsyncHandler(async (req: Request, res: Response) => {
     const storeSlug = req.params.storeSlug;
     const isFeatured = req.body.featured;
