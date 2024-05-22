@@ -32,7 +32,7 @@ productRouter.get(
     const storeSlug = req.params.storeSlug;
     const isFeatured = req.body.featured;
 
-    const store = await Store.findOne({ slug: storeSlug });
+    const store = await Store.findOne({ storeSlug: storeSlug });
 
     if (!store) {
       res.status(404).send({ message: 'Lo sentimos, esa tienda no se pudo encontrar' });
