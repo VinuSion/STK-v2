@@ -57,7 +57,16 @@ productRouter.get(
 productRouter.get('/:productSlug', async (req: Request, res: Response) => {
   const product = await Product.findOne({ productSlug: req.params.productSlug });
   if (product) {
-    res.send(product);
+    const store = await Store.findById(product.storeId);
+    if (store) {
+      res.send({
+        storeSlug: store.storeSlug,
+        storeName: store.storeName,
+        product: product
+      });
+    } else {
+      res.status(404).send({ message: 'Lo sentimos, la tienda con este producto no existe.' });
+    }
   } else {
     res.status(404).send({ message: 'Lo sentimos, ese producto no existe.' });
   }
