@@ -35,7 +35,7 @@ productRouter.get(
     const store = await Store.findOne({ storeSlug: storeSlug });
 
     if (!store) {
-      res.status(404).send({ message: 'Lo sentimos, esa tienda no se pudo encontrar' });
+      res.status(404).send({ message: 'Lo sentimos, esta tienda ya no existe.' });
     } else {
       // Use the store ID to query the products
       let query: any = { storeId: store._id };
@@ -98,6 +98,45 @@ productRouter.post('/create', expressAsyncHandler(async (req: Request, res: Resp
 
     // Send response
     res.status(201).send(product);
+  } catch (error) {
+    console.error('Error during product creation: ', error);
+    res.status(500).send({ message: 'An error occurred during product creation.' });
+  }
+}));
+
+// Crete a new product with storeSlug
+productRouter.post('/create/:storeSlug', expressAsyncHandler(async (req: Request, res: Response) => {
+  try {
+    // Find the store by storeSlug
+    const store = await Store.findOne({ storeSlug: req.params.storeSlug });
+
+    if (!store) {
+      res.status(404).send({ message: 'No podemos crear un producto para una tienda que no existe.' });
+    } else {
+      // Transform productSlug
+      const productSlug = `${transformName(req.body.productName)}-${generateRandomString()}`;
+  
+      // Create new product
+      const newProduct = new Product({
+        storeId: store._id,
+        productSlug: productSlug,
+        productName: req.body.productName,
+        productDescription: req.body.productDescription,
+        productPrice: req.body.productPrice,
+        productBrand: req.body.productBrand,
+        productCategory: req.body.productCategory,
+        stockAmount: req.body.stockAmount,
+        leadImageURL: req.body.leadImageURL,
+        imagesCollectionURL: req.body.imagesCollectionURL,
+        isFeatured: req.body.isFeatured,
+      });
+  
+      // Save new product to database
+      const product = await newProduct.save();
+  
+      // Send response
+      res.status(201).send(product);
+    }
   } catch (error) {
     console.error('Error during product creation: ', error);
     res.status(500).send({ message: 'An error occurred during product creation.' });
