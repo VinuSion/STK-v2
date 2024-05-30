@@ -15,6 +15,16 @@ storeRouter.get(
   })
 );
 
+// Get a specific store by its ID
+storeRouter.get('/find/:storeId', async (req: Request, res: Response) => {
+  const store = await Store.findById(req.params.storeId);
+  if (store) {
+    res.send(store);
+  } else {
+    res.status(404).send({ message: 'Lo sentimos, esa tienda no existe.' });
+  }
+});
+
 // Get a specific store by its slug
 storeRouter.get('/:storeSlug', async (req: Request, res: Response) => {
   const store = await Store.findOne({ storeSlug: req.params.storeSlug });
