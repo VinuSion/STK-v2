@@ -12,11 +12,7 @@ shippingRouter.get('/:userId', expressAsyncHandler(async (req: Request, res: Res
     // Find all shippingAddresses associated with the userId
     const shippingAddresses = await ShippingAddress.find({ userId });
 
-    if (shippingAddresses.length > 0) {
-      res.send(shippingAddresses); // Return the list of shippingAddresses
-    } else {
-      res.status(404).send({ message: 'No se encontraron direcciones de envío para este usuario.' });
-    }
+    res.send(shippingAddresses); // Return the list of shippingAddresses even if its empty
   } catch (error) {
     console.error('Error fetching shippingAddresses: ', error);
     res.status(500).send({ message: 'An error occurred when fetching user shipping addresses.' });
