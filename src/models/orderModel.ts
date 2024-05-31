@@ -56,7 +56,7 @@ const ShippingAddressSchema = new Schema({
 const OrderSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   storeId: { type: Schema.Types.ObjectId, ref: 'Store', required: true },
-  storeSlug: { type: String, required: true, unique: true },
+  storeSlug: { type: String, required: true },
   storeName: { type: String, required: true },
   storeImageURL: { type: String },
   orderStatus: {
