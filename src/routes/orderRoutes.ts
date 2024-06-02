@@ -28,12 +28,22 @@ orderRouter.get(
   })
 );
 
-// Get All Orders from a Store
+// Get All Orders from a Store by its ID
 orderRouter.get(
   "/store/:storeId",
   expressAsyncHandler(async (req: Request, res: Response) => {
     const storeId = req.params.storeId;
     const allOrdersFromStore = await Order.find({ storeId: storeId });
+    res.send(allOrdersFromStore);
+  })
+);
+
+// Get All Orders from a Store by its slug
+orderRouter.get(
+  "/store-slug/:storeSlug",
+  expressAsyncHandler(async (req: Request, res: Response) => {
+    const storeSlug = req.params.storeSlug;
+    const allOrdersFromStore = await Order.find({ storeSlug: storeSlug });
     res.send(allOrdersFromStore);
   })
 );
