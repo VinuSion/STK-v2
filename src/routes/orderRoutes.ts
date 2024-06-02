@@ -42,7 +42,7 @@ orderRouter.get(
     } else {
       res.send({
         storeName: store.storeName,
-        allOrdersFromStore: allOrdersFromStore,
+        orders: allOrdersFromStore,
       })
     }
   })
@@ -61,7 +61,7 @@ orderRouter.get(
       const allOrdersFromStore = await Order.find({ storeId: store._id })
       res.send({
         storeName: store.storeName,
-        allOrdersFromStore: allOrdersFromStore,
+        orders: allOrdersFromStore,
       })
     }
   })
